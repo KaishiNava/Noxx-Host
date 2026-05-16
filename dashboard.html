@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxx Hostt - Advanced Control Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/html/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #02040a;
+            --panel-glass: rgba(10, 15, 30, 0.7);
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #9d4edd;
+            --neon-orange: #ff758c;
+            --neon-green: #05ec8c;
+            --blur-radius: 16px;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Ambient Glowing Orbs */
+        .ambient-orb {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .orb-1 { background: var(--neon-cyan); top: -10%; right: -5%; }
+        .orb-2 { background: var(--neon-purple); bottom: 10%; left: -5%; }
+
+        h1, h2, h3, h4, .panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Glass Sidebar Layout */
+        .sidebar-panel {
+            background: var(--panel-glass);
+            backdrop-filter: blur(var(--blur-radius));
+            -webkit-backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            height: calc(100vh - 40px);
+            position: sticky;
+            top: 20px;
+            padding: 30px 20px;
+        }
+
+        .nav-link-custom {
+            color: #9ca3af;
+            font-weight: 600;
+            padding: 14px 20px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), transparent);
+            border-left: 3px solid var(--neon-cyan);
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.05);
+        }
+
+        /* Top Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 27, 75, 0.6) 100%);
+            backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; width: 250px; height: 100%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, transparent 70%);
+        }
+
+        /* Glass Metric Cards (Status Mini) */
+        .metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        /* Bento-Grid Menu Actions */
+        .bento-card {
+            background: var(--panel-glass);
+            backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top:0; left:0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Individual Card Hover Neon Glows */
+        .store-bento:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
+        }
+        .notify-bento:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.15);
+        }
+        .support-bento:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 35px rgba(5, 236, 140, 0.15);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .cyan-box { background: rgba(0, 242, 254, 0.1); color: var(--neon-cyan); }
+        .purple-box { background: rgba(157, 78, 221, 0.1); color: var(--neon-purple); }
+        .green-box { background: rgba(5, 236, 140, 0.1); color: var(--neon-green); }
+
+        .btn-action-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+        .bento-card:hover .btn-action-arrow {
+            background: #fff;
+            color: #000;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="container-fluid p-4">
+        <div class="row g-4">
+            
+            <div class="col-xl-3 col-lg-4 d-none d-lg-block">
+                <div class="sidebar-panel d-flex flex-column">
+                    <div class="mb-5 px-3">
+                        <h4 class="fw-bold tracking-wider mb-0">
+                            <i class="fa-solid fa-cube text-info me-2"></i>NOXX <span style="color: var(--neon-cyan);">HOSTT</span>
+                        </h4>
+                        <span class="text-muted small font-monospace">Core Dashboard v2.0</span>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <a href="dashboard.html" class="nav-link-custom active">
+                            <i class="fa-solid fa-chart-pie"></i> Overview Terminal
+                        </a>
+                        <a href="produck.html" class="nav-link-custom">
+                            <i class="fa-solid fa-server"></i> Cloud VPS Store
+                        </a>
+                        <a href="notify.html" class="nav-link-custom">
+                            <i class="fa-solid fa-envelope-open-text"></i> Invoice & Notify
+                        </a>
+                    </div>
+
+                    <div class="mt-auto border-top border-secondary border-opacity-10 pt-3">
+                        <div class="d-flex align-items-center gap-3 px-2 mb-3">
+                            <div class="rounded-circle bg-secondary bg-opacity-25 p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-user text-white-50"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 small fw-bold">Active Client</h6>
+                                <span class="text-muted small font-monospace" style="font-size: 0.75rem;">Verified Node</span>
+                            </div>
+                        </div>
+                        <a href="login.html" class="btn btn-outline-danger w-100 rounded-3 py-2 fw-bold text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                            <i class="fa-solid fa-power-off me-2"></i>Disconnect Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-8">
+                
+                <div class="welcome-banner mb-4">
+                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill mb-3 border border-info border-opacity-25 font-monospace">
+                        <span class="spinner-grow spinner-grow-sm me-2 text-info" role="status"></span>System Link Established
+                    </span>
+                    <h1 class="fw-bold mb-2">Welcome Back, <span style="background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Commander Cloud</span></h1>
+                    <p class="text-muted mb-0 max-width-600">Semua jaringan infrastruktur VPS berjalan normal. Gunakan bento panel di bawah untuk melakukan manajemen instan.</p>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="metric-card d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small d-block mb-1 text-uppercase fw-bold">Cloud Wallet</span>
+                                <h4 class="fw-bold m-0 font-monospace text-white">IDR 750.000</h4>
+                            </div>
+                            <i class="fa-solid fa-wallet text-muted fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-card d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small d-block mb-1 text-uppercase fw-bold">Active VPS Nodes</span>
+                                <h4 class="fw-bold m-0 font-monospace" style="color: var(--neon-cyan);">02 Active</h4>
+                            </div>
+                            <i class="fa-solid fa-microchip text-muted fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-card d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small d-block mb-1 text-uppercase fw-bold">Network Bandwidth</span>
+                                <h4 class="fw-bold m-0 font-monospace text-success">99.98% Uptime</h4>
+                            </div>
+                            <i class="fa-solid fa-chart-line text-muted fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="bento-card store-bento h-100 d-flex flex-column">
+                            <div class="icon-box cyan-box">
+                                <i class="fa-solid fa-store"></i>
+                            </div>
+                            <h3 class="fw-bold text-white mb-2">Cloud Server Store</h3>
+                            <p class="text-muted small mb-4">Akses katalog pembelian VPS DigitalOcean harga < 20K, AMD High Performance, dan VPS Legal garansi penuh.</p>
+                            
+                            <div class="d-flex align-items-center mt-auto pt-3">
+                                <span class="text-info small fw-bold font-monospace">DEPLOY ENGINE</span>
+                                <a href="produck.html" class="btn-action-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="bento-card notify-bento h-100 d-flex flex-column">
+                            <div class="icon-box purple-box">
+                                <i class="fa-solid fa-bell-ring"></i>
+                                <i class="fa-solid fa-envelope-open-text"></i>
+                            </div>
+                            <h3 class="fw-bold text-white mb-2">Notification & Invoices</h3>
+                            <p class="text-muted small mb-4">Lihat status validasi pembayaran unggahan resi, serta ambil data IP, username, dan password VPS kiriman admin.</p>
+                            
+                            <div class="d-flex align-items-center mt-auto pt-3">
+                                <span class="small fw-bold font-monospace" style="color: var(--neon-purple);">CHECK RECIPIENT</span>
+                                <a href="notify.html" class="btn-action-arrow"><i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="bento-card support-bento">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <div class="icon-box green-box m-0" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                            <i class="fa-solid fa-headset"></i>
+                                        </div>
+                                        <h4 class="fw-bold text-white m-0">Butuh Bantuan Teknis Jaringan?</h4>
+                                    </div>
+                                    <p class="text-muted small mb-0">Tim administrator IT infra kami siap membantu kebutuhan deployment server Anda kapan saja dalam siklus operasional penuh.</p>
+                                </div>
+                                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                    <button class="btn btn-dark border border-secondary border-opacity-20 rounded-3 px-4 py-2 small fw-bold font-monospace text-white-50" style="cursor: not-allowed;">
+                                        Open Ticket (Disabled)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="mt-5 pt-3 border-top border-secondary border-opacity-10 text-muted small font-monospace d-flex justify-content-between">
+                    <span>&copy; 2026 NOXX HOSTT SERVICES.</span>
+                    <span class="text-success"><i class="fa-solid fa-shield-check me-1"></i>SECURE CONTEXT INTERFACE</span>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

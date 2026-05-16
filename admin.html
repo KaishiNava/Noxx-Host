@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxx Hostt - Master Admin Infrastructure Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/html/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --panel-sidebar: #0f172a;
+            --panel-card: #1e293b;
+            --neon-danger: #ef4444;
+            --neon-warning: #f59e0b;
+            --neon-cyan: #06b6d4;
+            --neon-green: #10b981;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Sidebar Glass Styling */
+        .admin-sidebar {
+            background: var(--panel-sidebar);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            min-height: 100vh;
+            padding: 40px 24px;
+            display: flex;
+            flex-column: column;
+            justify-content: space-between;
+        }
+
+        /* Dashboard Bento Cards */
+        .admin-card {
+            background: var(--panel-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .mini-metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        /* Linux Terminal Style Logger */
+        .terminal-log-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .terminal-log-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+        .terminal-log-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .terminal-log {
+            background: #000000;
+            font-family: var(--font-mono);
+            border-left: 4px solid var(--neon-warning);
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* Table Inputs Styles */
+        .table-dark {
+            --bs-table-bg: #111827;
+            border-color: rgba(255,255,255,0.05);
+        }
+        .form-control-admin {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+            transition: all 0.3s;
+        }
+        .form-control-admin:focus {
+            border-color: var(--neon-cyan);
+            background: #0f172a;
+            color: #fff;
+            outline: none;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Action Save Button */
+        .btn-admin-save {
+            background: var(--neon-green);
+            color: #020617;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .btn-admin-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col-xl-3 col-lg-4 p-0">
+            <div class="admin-sidebar d-flex flex-column h-100">
+                <div>
+                    <div class="mb-4 px-2">
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-20 font-monospace mb-2">ROOT ACCESS DIRECTORY</span>
+                        <h3 class="fw-bold text-white m-0"><i class="fa-solid fa-folder-tree text-danger me-2"></i>NXX_CORE_PANEL</h3>
+                    </div>
+                    <hr class="border-secondary border-opacity-20 my-4">
+                    
+                    <div class="px-2">
+                        <div class="text-muted small font-monospace mb-2">SYSTEM MONITORING STATUS</div>
+                        <div class="d-flex align-items-center gap-2 text-success small fw-bold mb-2">
+                            <span class="spinner-grow spinner-grow-sm text-success" role="status"></span> API Gateway Online
+                        </div>
+                        <div class="text-white-50 small font-monospace">// Listening localStorage stream...</div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <a href="login.html" class="btn btn-outline-danger w-100 rounded-3 py-2.5 fw-bold font-space">
+                        <i class="fa-solid fa-power-off me-2"></i>TERMINATE SESSION
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-lg-8 p-4 p-md-5">
+            
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+                <div>
+                    <h1 class="fw-bold m-0">Infrastructure Dashboard</h1>
+                    <p class="text-muted mb-0">Manajemen pesanan masuk pelanggan, kontrol alokasi stok node, dan kebijakan tarif.</p>
+                </div>
+                <div class="font-space bg-dark px-4 py-2.5 rounded-3 border border-secondary border-opacity-10 small">
+                    SYSTEM TIME: <span class="text-info font-monospace" id="live-time">17/05/2026</span>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="mini-metric-card d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small d-block text-uppercase fw-bold">Gross Income</span>
+                            <h3 class="fw-bold m-0 font-monospace text-white" id="total-income">IDR 0</h3>
+                        </div>
+                        <i class="fa-solid fa-chart-line-up text-success fs-3"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mini-metric-card d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small d-block text-uppercase fw-bold">Incoming Webhooks</span>
+                            <h3 class="fw-bold m-0 font-monospace text-warning" id="total-orders">0 Log</h3>
+                        </div>
+                        <i class="fa-solid fa-rss text-warning fs-3"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mini-metric-card d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small d-block text-uppercase fw-bold">Active Store Products</span>
+                            <h3 class="fw-bold m-0 font-monospace text-info">06 Items</h3>
+                        </div>
+                        <i class="fa-solid fa-boxes-stacked text-info fs-3"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-warning fw-bold m-0"><i class="fa-solid fa-terminal me-2"></i>Real-time Order Notification Webhooks</h4>
+                    <button class="btn btn-sm btn-outline-secondary font-monospace" style="font-size:0.75rem;" onclick="clearLogs()"><i class="fa-solid fa-trash me-1"></i> Flush Logs</button>
+                </div>
+                <div class="terminal-log-wrapper" id="admin-log-list">
+                    <div class="terminal-log">
+                        <span class="text-muted">// No incoming server data stream captured yet. Monitoring API endpoints...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h4 class="text-info fw-bold mb-4"><i class="fa-solid fa-sliders me-2"></i>Product Database Matrix & Pricing Rules</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped align-middle table-hover m-0">
+                        <thead>
+                            <tr class="font-space text-muted" style="font-size:0.85rem; border-bottom: 2px solid rgba(255,255,255,0.1);">
+                                <th class="py-3">INSTANCE NODE NAME</th>
+                                <th class="py-3">BASE PRICE (IDR)</th>
+                                <th class="py-3">ALLOCATED STOCK</th>
+                                <th class="py-3 text-end">EXECUTE CONFIG</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-product-table">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Ambil basis data state global produk dan log orderan
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    let orders = JSON.parse(localStorage.getItem('admin_orders')) || [];
+
+    // Tampilkan data waktu dinamis
+    document.getElementById('live-time').innerText = new Date().toLocaleDateString('id-ID');
+
+    // Kalkulasi metrik ringkas ringkasan data admin
+    document.getElementById('total-orders').innerText = `${orders.length} Queue`;
+    let incomeSum = orders.reduce((sum, current) => sum + current.price, 0);
+    document.getElementById('total-income').innerText = "IDR " + incomeSum.toLocaleString('id-ID');
+
+    // Render Log Terminal Notifikasi Pesanan Masuk
+    const logList = document.getElementById('admin-log-list');
+    if(orders.length > 0) {
+        logList.innerHTML = "";
+        // Tampilkan order terbaru di posisi paling atas log
+        [...orders].reverse().forEach(o => {
+            logList.innerHTML += `
+                <div class="terminal-log mb-3">
+                    <span class="text-warning">[❗ INCOMING WEBHOCK - ACTION REQUIRED]</span><br>
+                    <strong>TRANSACTION_ID :</strong> <span class="text-white">${o.id}</span><br>
+                    <strong>TIMESTAMP_LOG  :</strong> ${o.time}<br>
+                    <strong>REQUEST_PRODUCT :</strong> <span class="text-info">${o.product}</span> (Settled: Rp ${o.price.toLocaleString('id-ID')})<br>
+                    <strong>BRIDGE_TARGET  :</strong> Target API ${o.media} -> Gateway [ <span class="text-danger fw-bold">${o.contact}</span> ]<br>
+                    <strong>SLIP_ATTACHMENT :</strong> <span class="text-success"><i class="fa-solid fa-file-image me-1"></i>${o.fileName}</span><br>
+                    <span class="text-muted">// Status: Awaiting admin script check to push credential packet...</span>
+                </div>
+            `;
+        });
+    }
+
+    // Render Database Matrix Tabel Penyesuaian Harga & Stok
+    const tableBody = document.getElementById('admin-product-table');
+    function renderTable() {
+        tableBody.innerHTML = "";
+        products.forEach((p) => {
+            tableBody.innerHTML += `
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                    <td class="fw-bold text-white font-space py-3">${p.name}</td>
+                    <td class="py-3">
+                        <div class="input-group input-group-sm" style="max-width: 160px;">
+                            <span class="input-group-text bg-dark border-secondary border-opacity-20 text-muted" style="font-size:0.8rem;">Rp</span>
+                            <input type="number" class="form-control-admin w-70" id="price-${p.id}" value="${p.price}">
+                        </div>
+                    </td>
+                    <td class="py-3">
+                        <input type="number" class="form-control-admin text-center" style="max-width: 90px;" id="stock-${p.id}" value="${p.stock}">
+                    </td>
+                    <td class="py-3 text-end">
+                        <button class="btn-admin-save" onclick="updateProduct('${p.id}')">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+    renderTable();
+
+    // Fungsi Update harga dan stok produk oleh master admin
+    function updateProduct(id) {
+        const newPrice = document.getElementById(`price-${id}`).value;
+        const newStock = document.getElementById(`stock-${id}`).value;
+
+        const index = products.findIndex(p => p.id === id);
+        if(index !== -1) {
+            products[index].price = parseInt(newPrice);
+            products[index].stock = parseInt(newStock);
+            localStorage.setItem('products', JSON.stringify(products));
+            alert(`SISTEM BERHASIL DI-UPDATE!\nKonfigurasi untuk ${products[index].name} kini telah diperbarui secara real-time.`);
+            renderTable();
+            // Muat ulang kalkulasi pendapatan jika ada perubahan baseline (opsional)
+            location.reload();
+        }
+    }
+
+    // Fungsi menghapus riwayat log transaksi masuk
+    function clearLogs() {
+        if(confirm("Apakah Anda yakin ingin menghapus seluruh riwayat antrian log pesanan masuk?")) {
+            localStorage.removeItem('admin_orders');
+            localStorage.removeItem('last_user_order');
+            location.reload();
+        }
+    }
+</script>
+</body>
+</html>

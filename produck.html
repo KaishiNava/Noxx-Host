@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxx Hostt - Next-Gen Cloud Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/html/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #02040a;
+            --panel-glass: rgba(10, 15, 30, 0.7);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #9d4edd;
+            --neon-green: #05ec8c;
+            --blur-radius: 16px;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        h1, h2, h3, h4, .price {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Ambient Glow Blurs */
+        .ambient-glow {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .glow-1 { background: var(--neon-cyan); top: 10%; left: -10%; }
+        .glow-2 { background: var(--neon-purple); bottom: 20%; right: -10%; }
+
+        /* Store Header Panel */
+        .store-header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(17, 24, 39, 0.4) 100%);
+            backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 35px;
+        }
+
+        /* Premium Cyber Card Design */
+        .card-vps {
+            background: var(--panel-glass);
+            backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover Glowing Effects based on category */
+        .do-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
+            transform: translateY(-8px);
+        }
+        .amd-card:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 15px 35px rgba(157, 78, 221, 0.15);
+            transform: translateY(-8px);
+        }
+        .legal-card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 35px rgba(5, 236, 140, 0.15);
+            transform: translateY(-8px);
+        }
+
+        /* Hardware Specs Pills */
+        .spec-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .spec-pill {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Price tag neon style */
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+        .price-do { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0, 242, 254, 0.2); }
+        .price-amd { color: var(--neon-purple); text-shadow: 0 0 10px rgba(157, 78, 221, 0.2); }
+        .price-legal { color: var(--neon-green); text-shadow: 0 0 10px rgba(5, 236, 140, 0.2); }
+
+        /* Futuristic Action Buttons */
+        .btn-deploy {
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-uppercase;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.02);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        .do-card .btn-deploy:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); border-color: var(--neon-cyan); }
+        .amd-card .btn-deploy:hover { background: var(--neon-purple); color: #fff; box-shadow: 0 0 15px var(--neon-purple); border-color: var(--neon-purple); }
+        .legal-card .btn-deploy:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); border-color: var(--neon-green); }
+
+        .stock-indicator {
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="container py-5">
+        
+        <div class="store-header mb-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+            <div>
+                <span class="badge bg-primary bg-opacity-10 text-info border border-info border-opacity-10 mb-2 px-3 py-1.5 font-monospace">AUTOMATED INSTANT PROVISIONING</span>
+                <h2 class="fw-bold m-0 text-white"><i class="fa-solid fa-layer-group text-info me-2"></i>Virtual Compute Nodes</h2>
+            </div>
+            <a href="dashboard.html" class="btn btn-dark border border-secondary border-opacity-20 rounded-3 px-4 py-2.5 small fw-bold font-monospace text-light text-decoration-none transition">
+                <i class="fa-solid fa-square-sliders-vertical me-2"></i>Dashboard Terminal
+            </a>
+        </div>
+
+        <div class="d-flex align-items-center mb-4 mt-5">
+            <div class="p-2.5 rounded-3 bg-info bg-opacity-10 text-info me-3 border border-info border-opacity-10"><i class="fa-solid fa-cloud-bolt fa-lg"></i></div>
+            <div>
+                <h4 class="mb-0 fw-bold text-white">DigitalOcean Drops</h4>
+                <p class="text-muted small mb-0">Server super murah, performa stabil, all-RAM di bawah Rp 20.000</p>
+            </div>
+        </div>
+        <div class="row g-4 mb-5" id="do-container"></div>
+
+        <div class="d-flex align-items-center mb-4 mt-5">
+            <div class="p-2.5 rounded-3 bg-purple bg-opacity-10 text-purple me-3 border border-purple border-opacity-10" style="color: var(--neon-purple);"><i class="fa-solid fa-microchip fa-lg"></i></div>
+            <div>
+                <h4 class="mb-0 fw-bold text-white">Premium High-Tier Infrastructure</h4>
+                <p class="text-muted small mb-0">Arsitektur komputasi tingkat tinggi dan node berlisensi resmi anti-suspend</p>
+            </div>
+        </div>
+        <div class="row g-4" id="premium-container"></div>
+
+    </div>
+
+    <script>
+        // Data default sinkron dengan halaman admin
+        const defaultProducts = [
+            { id: 'do_r2', category: 'do', type: 'do-card', priceStyle: 'price-do', name: 'VPS D.O R2 C2', ram: '2 GB', cpu: '2 vCPU Core', storage: '25 GB NVMe', network: '1 TB Bandwidth', price: 12500, stock: 10 },
+            { id: 'do_r4', category: 'do', type: 'do-card', priceStyle: 'price-do', name: 'VPS D.O R4 C2', ram: '4 GB', cpu: '2 vCPU Core', storage: '50 GB NVMe', network: '2 TB Bandwidth', price: 15000, stock: 8 },
+            { id: 'do_r8', category: 'do', type: 'do-card', priceStyle: 'price-do', name: 'VPS D.O R8 C4', ram: '8 GB', cpu: '4 vCPU Core', storage: '80 GB NVMe', network: '3 TB Bandwidth', price: 17500, stock: 5 },
+            { id: 'do_r16', category: 'do', type: 'do-card', priceStyle: 'price-do', name: 'VPS D.O R16 C4', ram: '16 GB', cpu: '4 vCPU Core', storage: '120 GB NVMe', network: '4 TB Bandwidth', price: 19900, stock: 3 },
+            { id: 'amd_ryzen', category: 'premium', type: 'amd-card', priceStyle: 'price-amd', name: 'VPS AMD Ryzen Dedicated', ram: '8 GB DDR5', cpu: '4 vCPU High-Freq', storage: '100 GB Gen4 SSD', network: '10 Gbps Port', price: 14000, stock: 12 },
+            { id: 'legal_ent', category: 'premium', type: 'legal-card', priceStyle: 'price-legal', name: 'VPS Legal Enterprise', ram: '16 GB Reg ECC', cpu: '8 vCPU Enterprise', storage: '200 GB RAID 10', network: 'Full SLA 99.99%', price: 25000, stock: 15 }
+        ];
+
+        if(!localStorage.getItem('products')) {
+            localStorage.setItem('products', JSON.stringify(defaultProducts));
+        }
+
+        const products = JSON.parse(localStorage.getItem('products'));
+        const doContainer = document.getElementById('do-container');
+        const premiumContainer = document.getElementById('premium-container');
+
+        products.forEach(p => {
+            const isOutOfStock = p.stock <= 0;
+            const cardHtml = `
+                <div class="${p.category === 'do' ? 'col-xl-3 col-md-6' : 'col-md-6'}">
+                    <div class="card card-vps ${p.type} h-100 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="fw-bold text-white m-0">${p.name}</h5>
+                            <span class="stock-indicator ${isOutOfStock ? 'text-danger' : 'text-success'}">
+                                ${isOutOfStock ? '● OUT OF STOCK' : `● ${p.stock} INSTANCES`}
+                            </span>
+                        </div>
+                        
+                        <div class="spec-container">
+                            <div class="spec-pill"><i class="fa-solid fa-memory text-white-50"></i> ${p.ram || 'RAM'}</div>
+                            <div class="spec-pill"><i class="fa-solid fa-microchip text-white-50"></i> ${p.cpu || 'vCPU'}</div>
+                            <div class="spec-pill"><i class="fa-solid fa-hard-drive text-white-50"></i> ${p.storage || 'SSD'}</div>
+                            <div class="spec-pill"><i class="fa-solid fa-network-wired text-white-50"></i> ${p.network || 'Port'}</div>
+                        </div>
+
+                        <div class="mt-auto pt-3">
+                            <div class="price ${p.priceStyle}">Rp ${p.price.toLocaleString('id-ID')}</div>
+                            <p class="text-muted small mb-4">Monthly subscription billing context</p>
+                            
+                            <button class="btn btn-deploy w-100" ${isOutOfStock ? 'disabled' : ''} onclick="buyProduct('${p.id}')">
+                                ${isOutOfStock ? 'NODE UNAVAILABLE' : 'DEPLOY SERVER INSTANCE'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            if(p.category === 'do') doContainer.innerHTML += cardHtml;
+            else premiumContainer.innerHTML += cardHtml;
+        });
+
+        function buyProduct(id) {
+            const selected = products.find(p => p.id === id);
+            localStorage.setItem('checkout_item', JSON.stringify(selected));
+            window.location.href = 'payment.html';
+        }
+    </script>
+</body>
+</html>

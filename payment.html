@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noxx Hostt - Secure Cryptographic Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/html/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #02040a;
+            --panel-glass: rgba(10, 15, 30, 0.75);
+            --neon-cyan: #00f2fe;
+            --neon-purple: #9d4edd;
+            --neon-green: #05ec8c;
+            --blur-radius: 20px;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        h1, h2, h3, h4, h5, .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Ambient Glow Blur */
+        .ambient-blur {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glass Checkout Box */
+        .checkout-box {
+            background: var(--panel-glass);
+            backdrop-filter: blur(var(--blur-radius));
+            -webkit-backdrop-filter: blur(var(--blur-radius));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Item Summary Bento Card */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        /* Form Controls Dark Futuristic Styling */
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #9ca3af;
+        }
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+        .form-control::placeholder {
+            color: #4b5563;
+        }
+
+        /* Neon Price Badge Display */
+        .price-badge {
+            background: linear-gradient(90deg, var(--neon-cyan), #00bcff);
+            color: #02040a;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            padding: 15px;
+            border-radius: 14px;
+            text-center: center;
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Cyberpunk Input Group Icon */
+        .input-group-text {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: none;
+            color: #64748b;
+            border-radius: 12px 0 0 12px;
+            padding: 0 16px;
+        }
+        .input-group > .form-control {
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Merchant Details Block */
+        .merchant-details {
+            background: rgba(5, 236, 140, 0.02);
+            border: 1px dashed rgba(5, 236, 140, 0.2);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        /* Submit Button Action */
+        .btn-submit-pay {
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+        .btn-submit-pay:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-blur"></div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8">
+                
+                <div class="checkout-box">
+                    <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-10">
+                        <h3 class="fw-bold m-0 text-white"><i class="fa-solid fa-receipt text-info me-2"></i>Secure Checkout</h3>
+                        <a href="produck.html" class="text-muted small text-decoration-none hover-white"><i class="fa-solid fa-arrow-left me-1"></i> Abort</a>
+                    </div>
+
+                    <div class="summary-card mb-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small d-block font-monospace text-uppercase" style="font-size:0.7rem; letter-spacing:1px;">Selected Instance</span>
+                            <strong id="item-name" class="fs-5 text-white font-space">Cloud VPS Node</strong>
+                            <div id="item-spec" class="text-muted small mt-1" style="font-size:0.8rem;">Parsing configuration matrix...</div>
+                        </div>
+                        <div id="item-price-display" class="font-space fw-bold text-info fs-4">Rp 0</div>
+                    </div>
+
+                    <form id="payForm">
+                        
+                        <div class="mb-4">
+                            <label class="form-label text-uppercase font-monospace">1. Delivery Destination Gate</label>
+                            <select class="form-select" id="gateway" onchange="toggleGatewayInput()" required>
+                                <option value="" disabled selected>-- Select API Delivery Bridge --</option>
+                                <option value="WhatsApp">WhatsApp Automated Bridge</option>
+                                <option value="Telegram">Telegram Secured DM</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4 d-none" id="contactGroup">
+                            <label class="form-label text-uppercase font-monospace" id="contactLabel">Client Endpoint Contact</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="addon-icon"><i class="fa-solid fa-network-wired"></i></span>
+                                <input type="text" class="form-control" id="contactInput" required disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-uppercase font-monospace">2. Payment Destination Merchant</label>
+                            <div class="merchant-details">
+                                <div class="d-flex justify-content-between text-muted small mb-1">
+                                    <span>Payment Type:</span>
+                                    <span class="text-white fw-bold">E-Wallet (DANA / OVO / GOPAY)</span>
+                                </div>
+                                <div class="d-flex justify-content-between text-muted small mb-2">
+                                    <span>Merchant Number:</span>
+                                    <span class="text-info fw-bold font-monospace">0812-3456-7890</span>
+                                </div>
+                                <div class="text-center pt-2 border-top border-secondary border-opacity-10 text-white-50 small" style="font-size:0.75rem;">
+                                    Account Holder Identity: <strong class="text-white">Noxx Hostt Corporate</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-uppercase font-monospace">3. Settlement Fee</label>
+                            <div class="price-badge text-center" id="item-price-badge">
+                                Total Tagihan: Rp 0
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-uppercase font-monospace">4. Attach Settlement Receipt Slip</label>
+                            <input type="file" class="form-control" id="proofImg" accept="image/*" required>
+                            <span class="text-muted d-block mt-1.5 font-monospace" style="font-size: 0.7rem;">// Upload formal transaction picture proof extension (*.jpg, *.png)</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit-pay w-100 text-uppercase mt-2">
+                            <i class="fa-solid fa-bolt-lightning me-2"></i>Execute Provision Order
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Ambil data matrix checkout dari penyimpanan session localStorage
+        const item = JSON.parse(localStorage.getItem('checkout_item'));
+        if(!item) window.location.href = 'produck.html';
+
+        document.getElementById('item-name').innerText = item.name;
+        document.getElementById('item-spec').innerText = `${item.ram || ''} | ${item.cpu || ''} | ${item.storage || ''}`;
+        document.getElementById('item-price-display').innerText = "Rp " + item.price.toLocaleString('id-ID');
+        document.getElementById('item-price-badge').innerText = "Total: Rp " + item.price.toLocaleString('id-ID');
+
+        // Fungsi manipulasi input grup dinamis perubah gateway
+        function toggleGatewayInput() {
+            const gateway = document.getElementById('gateway').value;
+            const group = document.getElementById('contactGroup');
+            const label = document.getElementById('contactLabel');
+            const input = document.getElementById('contactInput');
+            const icon = document.getElementById('addon-icon');
+
+            group.classList.remove('d-none');
+            input.disabled = false;
+            
+            if(gateway === 'WhatsApp') {
+                label.innerText = "Masukkan Nomor WhatsApp Aktif (Gunakan Angka)";
+                input.placeholder = "Contoh: 08123456789";
+                input.type = "number";
+                icon.innerHTML = `<i class="fa-brands fa-whatsapp text-success"></i>`;
+            } else {
+                label.innerText = "Masukkan Username Akun Telegram (Tanpa Tanda @)";
+                input.placeholder = "Contoh: noxx_client";
+                input.type = "text";
+                icon.innerHTML = `<i class="fa-brands fa-telegram text-info"></i>`;
+            }
+        }
+
+        // Event Interseptor Handler Validasi Data Order Form Submission
+        document.getElementById('payForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('proofImg');
+            
+            // Masukkan data kedalam array antrian order lokal sistem admin
+            const orders = JSON.parse(localStorage.getItem('admin_orders') || '[]');
+            const newOrder = {
+                id: "NXX-" + Math.floor(100000 + Math.random() * 900000),
+                product: item.name,
+                price: item.price,
+                media: document.getElementById('gateway').value,
+                contact: document.getElementById('contactInput').value,
+                fileName: fileInput.files[0] ? fileInput.files[0].name : "receipt_proof.png",
+                time: new Date().toLocaleString('id-ID'),
+                status: "Diproses"
+            };
+            
+            orders.push(newOrder);
+            localStorage.setItem('admin_orders', JSON.stringify(orders));
+
+            // Potong inventori stok produk dari database state produk global
+            const allProducts = JSON.parse(localStorage.getItem('products'));
+            const index = allProducts.findIndex(p => p.id === item.id);
+            if(index !== -1 && allProducts[index].stock > 0) {
+                allProducts[index].stock -= 1;
+                localStorage.setItem('products', JSON.stringify(allProducts));
+            }
+
+            // Simpan cache pesanan paling akhir user untuk di-load di halaman notify
+            localStorage.setItem('last_user_order', JSON.stringify(newOrder));
+            
+            alert("TRANSAKSI BERHASIL DICATAT!\nData invoice telah diteruskan ke log notifikasi admin.");
+            window.location.href = 'notify.html';
+        });
+    </script>
+</body>
+</html>
