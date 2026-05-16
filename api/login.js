@@ -4,8 +4,8 @@ export default async function handler(req, res) {
     const { username, password } = req.body;
 
     // KONFIGURASI REPOSITORY GITHUB KAMU (Silakan sesuaikan)
-    const GH_OWNER = "USERNAME_GITHUB_KAMU"; 
-    const GH_REPO = "NAMA_REPOSITORY_KAMU";
+    const GH_OWNER = "KaishiNava"; 
+    const GH_REPO = "Noxx-Hostt";
     const ADMIN_PATH = "database/admin.json";
     const USER_PATH = "database/users.json";
     const TOKEN = process.env.GH_TOKEN; // Mengambil token aman dari Vercel
